@@ -1,0 +1,9 @@
+[submodule "thirdparty/kaitai_struct_cpp_stl_runtime"]
+	path = thirdparty/kaitai_struct_cpp_stl_runtime
+	url = https://github.com/kaitai-io/kaitai_struct_cpp_stl_runtime.git
+[submodule "thirdparty/googletest"]
+	path = thirdparty/googletest
+	url = https://github.com/google/googletest.git
+[submodule "tests/rag_test_data"]
+	path = tests/rag_test_data
+	url = https://github.com/L1nkZ/rag_test_data.git
