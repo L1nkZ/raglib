@@ -40,3 +40,43 @@ function(add_cc_test)
 
   add_test(NAME ${_NAME} COMMAND ${_NAME})
 endfunction()
+
+function(add_cc_fuzzer)
+  if(NOT RAGLIB_FUZZING OR NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    return()
+  endif()
+
+  cmake_parse_arguments(ADD_CC_FUZZER
+    ""
+    "NAME"
+    "SRCS;COPTS;DEFINES;LINKOPTS;DEPS"
+    ${ARGN}
+  )
+
+  set(_NAME "raglib_${ADD_CC_FUZZER_NAME}")
+
+  add_executable(${_NAME} "")
+  target_sources(${_NAME} PRIVATE ${ADD_CC_FUZZER_SRCS})
+
+  target_compile_definitions(${_NAME}
+    PUBLIC
+    ${ADD_CC_FUZZER_DEFINES}
+  )
+  target_compile_options(${_NAME}
+    PRIVATE ${ADD_CC_FUZZER_COPTS}
+  )
+
+  target_link_libraries(${_NAME}
+    PUBLIC ${ADD_CC_FUZZER_DEPS}
+    PRIVATE
+      ${ADD_CC_FUZZER_LINKOPTS}
+  )
+
+  target_compile_options(${_NAME}
+    PRIVATE -g -O2 -fno-omit-frame-pointer -fsanitize=fuzzer
+  )
+
+  target_link_libraries(${_NAME}
+    PRIVATE -fsanitize=fuzzer
+  )
+endfunction()
