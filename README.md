@@ -5,6 +5,7 @@ A C++ library for parsing Ragnarok Online resource files, powered by `Kaitai Str
 ## Supported formats
 
 * RSM (up to version 2.3)
+* GND
 
 ## How to Build
 
