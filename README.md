@@ -1,4 +1,4 @@
-# raglib
+# raglib [![Build Status](https://travis-ci.org/L1nkZ/raglib.svg?branch=master)](https://travis-ci.org/L1nkZ/raglib)
 
 A C++ library for parsing Ragnarok Online resource files, powered by `Kaitai Struct`.
 

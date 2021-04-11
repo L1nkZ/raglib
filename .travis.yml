@@ -1,0 +1,14 @@
+dist: focal
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+before_install:
+  - sudo apt-get install build-essential
+
+script:
+  - cmake -B build -DRAGLIB_BUILD_TESTS=ON -DRAGLIB_ASAN=ON -DRAGLIB_USAN=ON -DRAGLIB_LSAN=ON
+  - cmake --build build
+  - ./build/raglib_rsm_test
