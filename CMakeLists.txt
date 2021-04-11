@@ -40,6 +40,7 @@ endif()
 add_library(raglib
   STATIC
     "src/rsm.cc"
+    "src/gnd.cc"
 )
 target_include_directories(raglib SYSTEM INTERFACE
   "$<BUILD_INTERFACE:${RAGLIB_BUILD_INCLUDE_DIRS}>"
@@ -50,6 +51,7 @@ add_library(raglib::raglib ALIAS raglib)
 
 add_subdirectory("thirdparty")
 
+# Unit tests
 add_cc_test(
   NAME
     rsm_test
@@ -60,11 +62,21 @@ add_cc_test(
     gmock_main
 )
 
+# Fuzzers
 add_cc_fuzzer(
   NAME
     rsm_fuzzer
   SRCS
    "src/rsm_fuzzer.cc"
+  DEPS
+    raglib::raglib
+)
+
+add_cc_fuzzer(
+  NAME
+    gnd_fuzzer
+  SRCS
+   "src/gnd_fuzzer.cc"
   DEPS
     raglib::raglib
 )
