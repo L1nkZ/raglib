@@ -19,40 +19,64 @@ seq:
     enum: shading
   - id: alpha
     type: u1
+    if: _root.version >= 0x104
   - id: reserved
     size: 16
+    if: _root.version < 0x200
+
+  # Version 0x20X
+  - id: frame_rate_per_second
+    type: f4
+    if: _root.version >= 0x202
   # Textures
   - id: texture_count
     type: s4
+    if: _root.version <= 0x202
   - id: texture_names
-    size: 40
+    type: string
     repeat: expr
     repeat-expr: texture_count
+    if: _root.version <= 0x202
+  # Root nodes
+  - id: root_node_count
+    type: s4
+    if: _root.version >= 0x202
+  - id: root_node_names
+    type: string
+    repeat: expr
+    repeat-expr: root_node_count
+    if: _root.version >= 0x202
+  - id: root_node_name
+    type: string
+    if: _root.version < 0x200
+
   # Nodes
-  - id: main_node_name
-    size: 40
   - id: node_count
     type: s4
   - id: nodes
     type: node
     repeat: expr
     repeat-expr: node_count
-  # Position keys
-  - id: pos_key_count
+
+  # Scale key frames
+  - id: scale_key_count
     type: s4
-    if: _root.version < 0x105
-  - id: pos_key_frames
-    type: pos_key_frame
+    if: _root.version < 0x106
+  - id: scale_key_frames
+    type: scale_key_frame
     repeat: expr
-    repeat-expr: pos_key_count
-    if: _root.version < 0x105
+    repeat-expr: scale_key_count
+    if: _root.version < 0x106
+
   # Volume boxes
   - id: volume_box_count
     type: s4
+    if: not _io.eof
   - id: volume_boxes
     type: volume_box
     repeat: expr
     repeat-expr: volume_box_count
+    if: not _io.eof
   
 enums:
   shading:
@@ -64,53 +88,87 @@ types:
   node:
     seq:
       - id: name
-        size: 40
+        type: string
       - id: parent_name
-        size: 40
+        type: string
+
+      # Textures
       - id: texture_count
         type: s4
+      - id: texture_names
+        type: string
+        repeat: expr
+        repeat-expr: texture_count
+        if: _root.version >= 0x203
       - id: texture_ids
         type: s4
         repeat: expr
         repeat-expr: texture_count
+        if: _root.version < 0x203
+
+      # Node transformations
       - id: info
         type: node_info
+
       # Vertices
-      - id: node_vertex_count
+      - id: mesh_vertex_count
         type: s4
-      - id: node_vertices
-        type: node_vertex
+      - id: mesh_vertices
+        type: mesh_vertex
         repeat: expr
-        repeat-expr: node_vertex_count
+        repeat-expr: mesh_vertex_count
       - id: texture_vertex_count
         type: s4
       - id: texture_vertices
         type: texture_vertex
         repeat: expr
         repeat-expr: texture_vertex_count
+
       # Faces
       - id: face_count
         type: s4
-      - id: faces_info
+      - id: faces
         type: face_info
         repeat: expr
         repeat-expr: face_count
-      # Translation keys
-      - id: pos_key_count
+
+      # Scale key frames
+      - id: scale_key_count
         type: s4
-        if: _root.version >= 0x105
-      - id: pos_key_frames
-        type: pos_key_frame
+        if: _root.version >= 0x106
+      - id: scale_key_frames
+        type: scale_key_frame
         repeat: expr
-        repeat-expr: pos_key_count
-        if: _root.version >= 0x105
-      # Rotation keys
+        repeat-expr: scale_key_count
+        if: _root.version >= 0x106
+
+      # Rotation key frames
       - id: rot_key_count
         type: s4
       - id: rot_key_frames
         type: rot_key_frame
         repeat: expr
         repeat-expr: rot_key_count
+
+      # Translation key frames
+      - id: pos_key_count
+        type: s4
+        if: _root.version >= 0x202
+      - id: pos_key_frames
+        type: pos_key_frame
+        repeat: expr
+        repeat-expr: pos_key_count
+        if: _root.version >= 0x202
+
+      # Animated textures
+      - id: animated_texture_count
+        type: s4
+        if: _root.version >= 0x203
+      - id: animated_textures
+        type: animated_texture
+        repeat: expr
+        repeat-expr: animated_texture_count
+        if: _root.version >= 0x203
 
   node_info:
     seq:
@@ -126,18 +184,22 @@ types:
         type: f4
         repeat: expr
         repeat-expr: 3
+        if: _root.version < 0x202
       - id: rotation_angle
         type: f4
+        if: _root.version < 0x202
       - id: rotation_axis
         type: f4
         repeat: expr
         repeat-expr: 3
+        if: _root.version < 0x202
       - id: scale
         type: f4
         repeat: expr
         repeat-expr: 3
+        if: _root.version < 0x202
 
-  node_vertex:
+  mesh_vertex:
     seq:
       - id: position
         type: f4
@@ -156,7 +218,10 @@ types:
         
   face_info:
     seq:
-      - id: node_vertex_ids
+      - id: length
+        type: s4
+        if: _root.version >= 0x202
+      - id: mesh_vertex_ids
         type: u2
         repeat: expr
         repeat-expr: 3
@@ -170,9 +235,15 @@ types:
         type: u2
       - id: two_sides
         type: s4
-      - id: smooth_group
+      - id: smooth_group_x
         type: s4
         if: _root.version >= 0x102
+      - id: smooth_group_y
+        type: s4
+        if: _root.version >= 0x202 and length > 24
+      - id: smooth_group_z
+        type: s4
+        if: _root.version >= 0x202 and length > 28
 
   pos_key_frame:
     seq:
@@ -182,6 +253,8 @@ types:
         type: f4
         repeat: expr
         repeat-expr: 3
+      - id: data
+        type: s4
 
   rot_key_frame:
     seq:
@@ -191,6 +264,24 @@ types:
         type: f4
         repeat: expr
         repeat-expr: 4
+
+  scale_key_frame:
+    seq:
+      - id: frame_id
+        type: s4
+      - id: scale
+        type: f4
+        repeat: expr
+        repeat-expr: 3
+      - id: data
+        type: f4
+
+  texture_key_frame:
+    seq:
+      - id: frame_id
+        type: s4
+      - id: offset
+        type: f4
 
   volume_box:
     seq:
@@ -210,3 +301,33 @@ types:
         type: s4
         if: _root.version >= 0x103
         
+  animated_texture:
+    seq:
+      - id: texture_id
+        type: s4
+      - id: animation_count
+        type: s4
+      - id: tex_animations
+        type: tex_animation
+        repeat: expr
+        repeat-expr: animation_count
+
+  tex_animation:
+    seq:
+      - id: type
+        type: s4
+      # Texture key frames
+      - id: tex_frame_count
+        type: s4
+      - id: tex_key_frames
+        type: texture_key_frame
+        repeat: expr
+        repeat-expr: tex_frame_count
+
+  string:
+    seq:
+      - id: len
+        type: s4
+        if: _root.version > 0x200
+      - id: value
+        size: _root.version > 0x200 ? len : 40
