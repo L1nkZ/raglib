@@ -32,6 +32,8 @@ seq:
   - id: texture_count
     type: s4
     if: _root.version <= 0x202
+    valid:
+      expr: _ <= 1024
   - id: texture_names
     type: string
     repeat: expr
@@ -41,6 +43,8 @@ seq:
   - id: root_node_count
     type: s4
     if: _root.version >= 0x202
+    valid:
+      expr: _ <= 1024
   - id: root_node_names
     type: string
     repeat: expr
@@ -53,6 +57,8 @@ seq:
   # Nodes
   - id: node_count
     type: s4
+    valid:
+      expr: _ <= 1024
   - id: nodes
     type: node
     repeat: expr
@@ -62,6 +68,8 @@ seq:
   - id: scale_key_count
     type: s4
     if: _root.version < 0x106
+    valid:
+      expr: _ <= 65536
   - id: scale_key_frames
     type: scale_key_frame
     repeat: expr
@@ -72,6 +80,8 @@ seq:
   - id: volume_box_count
     type: s4
     if: not _io.eof
+    valid:
+      expr: _ <= 65536
   - id: volume_boxes
     type: volume_box
     repeat: expr
@@ -95,6 +105,8 @@ types:
       # Textures
       - id: texture_count
         type: s4
+        valid:
+          expr: _ <= 1024
       - id: texture_names
         type: string
         repeat: expr
@@ -113,12 +125,16 @@ types:
       # Vertices
       - id: mesh_vertex_count
         type: s4
+        valid:
+          expr: _ <= 65536
       - id: mesh_vertices
         type: mesh_vertex
         repeat: expr
         repeat-expr: mesh_vertex_count
       - id: texture_vertex_count
         type: s4
+        valid:
+          expr: _ <= 65536
       - id: texture_vertices
         type: texture_vertex
         repeat: expr
@@ -127,6 +143,8 @@ types:
       # Faces
       - id: face_count
         type: s4
+        valid:
+          expr: _ <= 65536
       - id: faces
         type: face_info
         repeat: expr
@@ -136,6 +154,8 @@ types:
       - id: scale_key_count
         type: s4
         if: _root.version >= 0x106
+        valid:
+          expr: _ <= 65536
       - id: scale_key_frames
         type: scale_key_frame
         repeat: expr
@@ -145,6 +165,8 @@ types:
       # Rotation key frames
       - id: rot_key_count
         type: s4
+        valid:
+          expr: _ <= 65536
       - id: rot_key_frames
         type: rot_key_frame
         repeat: expr
@@ -154,6 +176,8 @@ types:
       - id: pos_key_count
         type: s4
         if: _root.version >= 0x202
+        valid:
+          expr: _ <= 65536
       - id: pos_key_frames
         type: pos_key_frame
         repeat: expr
@@ -163,6 +187,8 @@ types:
       # Animated textures
       - id: animated_texture_count
         type: s4
+        valid:
+          expr: _ <= 65536
         if: _root.version >= 0x203
       - id: animated_textures
         type: animated_texture
@@ -307,6 +333,8 @@ types:
         type: s4
       - id: animation_count
         type: s4
+        valid:
+          expr: _ <= 65536
       - id: tex_animations
         type: tex_animation
         repeat: expr
@@ -319,6 +347,8 @@ types:
       # Texture key frames
       - id: tex_frame_count
         type: s4
+        valid:
+          expr: _ <= 65536
       - id: tex_key_frames
         type: texture_key_frame
         repeat: expr
@@ -329,5 +359,7 @@ types:
       - id: len
         type: s4
         if: _root.version > 0x200
+        valid:
+          expr: _ <= 1024
       - id: value
         size: _root.version > 0x200 ? len : 40
