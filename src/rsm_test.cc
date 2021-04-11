@@ -32,22 +32,22 @@ TEST(Rsm, CtorValidRsm104Controller) {
   const raglib::rsm_t rsm(&ks);
   EXPECT_EQ(rsm.version(), 0x104);
   EXPECT_EQ(rsm.texture_count(), 2);
-  EXPECT_STREQ(rsm.main_node_name().c_str(), "borf");
+  EXPECT_STREQ(rsm.root_node_name()->value().c_str(), "borf");
   EXPECT_EQ(rsm.animation_count(), 16000);
   EXPECT_EQ(rsm.shading_type(), raglib::rsm_t::shading_t::SHADING_FLAT);
   EXPECT_EQ(rsm.alpha(), 255);
   EXPECT_EQ(rsm.node_count(), 1);
-  EXPECT_EQ(rsm.pos_key_count(), 0);
+  EXPECT_EQ(rsm.scale_key_count(), 0);
   EXPECT_EQ(rsm.volume_box_count(), 0);
   // Textures
   const auto& texture_name_0 = (*rsm.texture_names())[0];
-  EXPECT_STREQ(texture_name_0.c_str(), "kitchen\\garbage.bmp");
+  EXPECT_STREQ(texture_name_0->value().c_str(), "kitchen\\garbage.bmp");
   const auto& texture_name_1 = (*rsm.texture_names())[1];
-  EXPECT_STREQ(texture_name_1.c_str(), "kitchen\\colors.bmp");
+  EXPECT_STREQ(texture_name_1->value().c_str(), "kitchen\\colors.bmp");
   // Nodes
   const auto& p_node = (*rsm.nodes())[0];
   EXPECT_EQ(p_node->face_count(), 5652);
-  EXPECT_EQ(p_node->node_vertex_count(), 4764);
+  EXPECT_EQ(p_node->mesh_vertex_count(), 4764);
   EXPECT_EQ(p_node->texture_vertex_count(), 4764);
   EXPECT_EQ(p_node->texture_count(), 2);
 }
@@ -59,20 +59,20 @@ TEST(Rsm, CtorValidRsm104Pokercenter) {
   const raglib::rsm_t rsm(&ks);
   EXPECT_EQ(rsm.version(), 0x104);
   EXPECT_EQ(rsm.texture_count(), 1);
-  EXPECT_STREQ(rsm.main_node_name().c_str(), "borf");
+  EXPECT_STREQ(rsm.root_node_name()->value().c_str(), "borf");
   EXPECT_EQ(rsm.animation_count(), 16000);
   EXPECT_EQ(rsm.shading_type(), raglib::rsm_t::shading_t::SHADING_FLAT);
   EXPECT_EQ(rsm.alpha(), 255);
   EXPECT_EQ(rsm.node_count(), 1);
-  EXPECT_EQ(rsm.pos_key_count(), 0);
+  EXPECT_EQ(rsm.scale_key_count(), 0);
   EXPECT_EQ(rsm.volume_box_count(), 0);
   // Textures
   const auto& texture_name = (*rsm.texture_names())[0];
-  EXPECT_STREQ(texture_name.c_str(), "pokemon\\pokecentre.bmp");
+  EXPECT_STREQ(texture_name->value().c_str(), "pokemon\\pokecentre.bmp");
   // Nodes
   const auto& p_node = (*rsm.nodes())[0];
   EXPECT_EQ(p_node->face_count(), 1308);
-  EXPECT_EQ(p_node->node_vertex_count(), 1608);
+  EXPECT_EQ(p_node->mesh_vertex_count(), 1608);
   EXPECT_EQ(p_node->texture_vertex_count(), 1608);
   EXPECT_EQ(p_node->texture_count(), 1);
 }
