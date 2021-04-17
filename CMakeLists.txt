@@ -41,6 +41,7 @@ add_library(raglib
   STATIC
     "src/rsm.cc"
     "src/gnd.cc"
+    "src/rsw.cc"
 )
 target_include_directories(raglib SYSTEM INTERFACE
   "$<BUILD_INTERFACE:${RAGLIB_BUILD_INCLUDE_DIRS}>"
@@ -87,6 +88,15 @@ add_cc_fuzzer(
     gnd_fuzzer
   SRCS
    "src/gnd_fuzzer.cc"
+  DEPS
+    raglib::raglib
+)
+
+add_cc_fuzzer(
+  NAME
+    rsw_fuzzer
+  SRCS
+   "src/rsw_fuzzer.cc"
   DEPS
     raglib::raglib
 )
