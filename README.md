@@ -1,12 +1,13 @@
 # raglib [![Build Status](https://travis-ci.org/L1nkZ/raglib.svg?branch=master)](https://travis-ci.org/L1nkZ/raglib)
 
-A C++ library for parsing Ragnarok Online resource files, powered by `Kaitai Struct`.
+A C++ library for parsing Ragnarok Online resource files safely, powered by `Kaitai Struct`.
 
 ## Supported formats
 
 * RSM (up to version 2.3)
 * GND
 * RSW
+* SPR
 
 ## How to Build
 
