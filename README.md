@@ -6,6 +6,7 @@ A C++ library for parsing Ragnarok Online resource files safely, powered by `Kai
 
 * RSM (up to version 2.3)
 * GND
+* GAT
 * RSW
 * SPR
 
