@@ -106,6 +106,16 @@ add_cc_test(
     gmock_main
 )
 
+add_cc_test(
+  NAME
+    act_test
+  SRCS
+   "src/act_test.cc"
+  DEPS
+    raglib::raglib
+    gmock_main
+)
+
 # Fuzzers
 add_cc_fuzzer(
   NAME
