@@ -128,12 +128,14 @@ void spr_t::rgba_image_t::_read() {
   m_height = m__io->read_u2le();
   {
     uint16_t _ = height();
-    if (!(((width() * height()) * 4) <= 2147483648UL)) {
+    if (!(((static_cast<std::streamsize>(width()) * height()) * 4) <=
+          1073741824L)) {
       throw kaitai::validation_expr_error<uint16_t>(
           height(), _io(), std::string("/types/rgba_image/seq/1"));
     }
   }
-  m_data = m__io->read_bytes(((width() * height()) * 4));
+  m_data = m__io->read_bytes(
+      ((static_cast<std::streamsize>(width()) * height()) * 4));
 }
 
 spr_t::rgba_image_t::~rgba_image_t() { _clean_up(); }
@@ -199,12 +201,13 @@ void spr_t::indexed_image_t::_read() {
   m_height = m__io->read_u2le();
   {
     uint16_t _ = height();
-    if (!((width() * height()) <= 2147483648UL)) {
+    if (!((static_cast<std::streamsize>(width()) * height()) <= 1073741824L)) {
       throw kaitai::validation_expr_error<uint16_t>(
           height(), _io(), std::string("/types/indexed_image/seq/1"));
     }
   }
-  m_data = m__io->read_bytes((width() * height()));
+  m_data =
+      m__io->read_bytes((static_cast<std::streamsize>(width()) * height()));
 }
 
 spr_t::indexed_image_t::~indexed_image_t() { _clean_up(); }

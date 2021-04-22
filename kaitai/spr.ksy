@@ -49,7 +49,7 @@ types:
       - id: height
         type: u2
         valid:
-          expr: width * height <= 2147483648
+          expr: width * height <= 1073741824
       - id: data
         size: width * height
 
@@ -72,7 +72,7 @@ types:
       - id: height
         type: u2
         valid:
-          expr: width * height * 4 <= 2147483648
+          expr: width * height * 4 <= 1073741824
       - id: data
         size: width * height * 4
 
