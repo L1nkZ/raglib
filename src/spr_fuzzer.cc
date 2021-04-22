@@ -1,13 +1,11 @@
 #include <raglib/spr.h>
 
-#include <cstddef>
 #include <cstdint>
-#include <sstream>
+#include <string>
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *p_data, size_t size) {
-  std::istringstream is(
-      std::string(reinterpret_cast<const char *>(p_data), size));
-  kaitai::kstream ks(&is);
+  std::string content(reinterpret_cast<const char *>(p_data), size);
+  kaitai::kstream ks(content);
   try {
     const raglib::spr_t spr(&ks);
   } catch (std::exception &) {
