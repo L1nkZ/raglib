@@ -9,6 +9,7 @@ A C++ library for parsing Ragnarok Online resource files safely, powered by `Kai
 * GAT
 * RSW
 * SPR
+* ACT
 
 ## How to Build
 
