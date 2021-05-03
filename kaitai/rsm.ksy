@@ -257,19 +257,16 @@ types:
         repeat-expr: 3
       - id: texture_id
         type: u2
-      - id: padding
+      - id: padding1
         type: u2
       - id: two_sides
         type: s4
-      - id: smooth_group_x
+      - id: smooth_group
         type: s4
         if: _root.version >= 0x102
-      - id: smooth_group_y
-        type: s4
+      - id: padding2
+        size: length - 24
         if: _root.version >= 0x202 and length > 24
-      - id: smooth_group_z
-        type: s4
-        if: _root.version >= 0x202 and length > 28
 
   pos_key_frame:
     seq:
